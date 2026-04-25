@@ -384,44 +384,52 @@
         <div class="section-label"><span>Posts</span></div>
 
         <div class="row">
-            <% if (posts && posts.length > 0) { %>
-                <% posts.forEach(post => { %>
+            <% if (posts && posts.length> 0) { %>
+                <% posts.forEach(post=> { %>
                     <div class="col s12 m6 l4">
                         <div class="card">
                             <div class="card-image">
-                                <img src="<%= post.imageUrl || 'https://via.placeholder.com/400x300?text=No+Image' %>" alt="Imagen del post">
+                                <img src="<%= post.imageUrl || 'https://via.placeholder.com/400x300?text=No+Image' %>"
+                                    alt="Imagen del post">
                             </div>
                             <div class="card-content">
-                                <span class="card-title"><%= post.title %></span>
-                                <p><%= post.content %></p>
+                                <span class="card-title">
+                                    <%= post.title %>
+                                </span>
+                                <p>
+                                    <%= post.content %>
+                                </p>
                                 <p>
                                     <strong>Hashtags:</strong>
-                                    <% if (post.hashtags && post.hashtags.length > 0) { %>
-                                        <% post.hashtags.forEach(tag => { %>
+                                    <% if (post.hashtags && post.hashtags.length> 0) { %>
+                                        <% post.hashtags.forEach(tag=> { %>
                                             <span class="chip">#<%= tag %></span>
-                                        <% }) %>
-                                    <% } else { %>
-                                        <span style="color: grey; font-size: 0.7rem;">Sin etiquetas</span>
-                                    <% } %>
+                                            <% }) %>
+                                                <% } else { %>
+                                                    <span style="color: grey; font-size: 0.7rem;">Sin etiquetas</span>
+                                                    <% } %>
                                 </p>
                             </div>
                             <div class="card-action">
                                 <span><strong>Sistema</strong></span>
                                 <div class="right">
-                                    <a href="#!" class="btn-flat"><i class="material-icons teal-text">edit</i></a>
-                                    <a href="/posts/delete/<%= post._id %>" class="btn-flat" onclick="return confirm('¿Eliminar post?')">
+                                    <a href="/posts/edit/<%= post._id %>" class="btn-flat"><i
+                                            class="material-icons teal-text">edit</i></a>
+                                    <a href="/posts/delete/<%= post._id %>" class="btn-flat"
+                                        onclick="return confirm('¿Eliminar?')">
                                         <i class="material-icons red-text">delete</i>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                <% }) %>
-            <% } else { %>
-                <div class="col s12">
-                    <p class="center-align" style="color: var(--val-red); letter-spacing: 2px;">NO HAY POSTS DISPONIBLES</p>
-                </div>
-            <% } %>
+                    <% }) %>
+                        <% } else { %>
+                            <div class="col s12">
+                                <p class="center-align" style="color: var(--val-red); letter-spacing: 2px;">NO HAY POSTS
+                                    DISPONIBLES</p>
+                            </div>
+                            <% } %>
         </div>
 
     </div>

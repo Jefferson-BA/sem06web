@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Post</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    </head>
+<body style="background-color: #0F1923; color: white; padding: 50px;">
+    <div class="container">
+        <h4 style="color: #FF4655; font-family: 'Rajdhani';">EDITAR AGENTE / POST</h4>
+        <form action="/posts/update/<%= post._id %>" method="POST" style="background: rgba(26, 39, 51, 0.7); padding: 30px; border: 1px solid #FF4655;">
+            <input type="text" name="title" value="<%= post.title %>" placeholder="Título" required style="color: white;">
+            <input type="text" name="content" value="<%= post.content %>" placeholder="Contenido" required style="color: white;">
+            <input type="text" name="imageUrl" value="<%= post.imageUrl %>" placeholder="URL Imagen" style="color: white;">
+            <input type="text" name="hashtags" value="<%= post.hashtags.join(',') %>" placeholder="Hashtags" style="color: white;">
+            <button type="submit" class="btn" style="background: #FF4655; width: 100%; margin-top: 20px;">Actualizar Post</button>
+            <a href="/posts" style="display: block; text-align: center; margin-top: 10px; color: #ECE8E1;">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>
