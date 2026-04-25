@@ -1,29 +1,238 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <title>Social Media - Home</title>
-    <!-- Materialize CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --val-red: #FF4655;
+            --val-white: #ECE8E1;
+            --val-dark: #0F1923;
+            --val-mid: #1A2733;
+            --val-accent: #FF4655;
+            --val-border: rgba(255,70,85,0.35);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--val-dark);
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,70,85,0.04) 60px),
+                repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,70,85,0.04) 60px);
+            font-family: 'Barlow', sans-serif;
+            color: var(--val-white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Corner decorators */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            width: 220px;
+            height: 220px;
+            border: 2px solid var(--val-border);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::before { top: -30px; left: -30px; border-right: none; border-bottom: none; }
+        body::after  { bottom: -30px; right: -30px; border-left: none; border-top: none; }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 60px 40px;
+            max-width: 680px;
+            width: 100%;
+        }
+
+        /* Glowing orb behind text */
+        .glow-orb {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -55%);
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(255,70,85,0.13) 0%, transparent 70%);
+            pointer-events: none;
+            animation: pulse 3s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:.7;transform:translate(-50%,-55%) scale(1)} 50%{opacity:1;transform:translate(-50%,-55%) scale(1.08)} }
+
+        /* Logo/badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,70,85,0.12);
+            border: 1px solid var(--val-border);
+            padding: 5px 16px;
+            margin-bottom: 28px;
+            clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+            animation: fadeDown 0.5s ease both;
+        }
+        .badge-dot { width: 7px; height: 7px; background: var(--val-red); border-radius: 50%; animation: blink 1.2s ease infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+        .badge span { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--val-red); }
+
+        h2 {
+            font-family: 'Rajdhani', sans-serif !important;
+            font-size: clamp(2.2rem, 6vw, 3.6rem) !important;
+            font-weight: 700 !important;
+            color: var(--val-white) !important;
+            line-height: 1.05;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0 !important;
+            animation: fadeDown 0.6s 0.1s ease both;
+        }
+        h2 .blue-text { color: var(--val-white) !important; }
+        h2 em {
+            color: var(--val-red);
+            font-style: normal;
+            position: relative;
+        }
+
+        .divider-line {
+            width: 60px;
+            height: 2px;
+            background: var(--val-red);
+            margin: 20px auto;
+            position: relative;
+            animation: fadeDown 0.6s 0.2s ease both;
+        }
+        .divider-line::before, .divider-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px; height: 6px;
+            border: 2px solid var(--val-red);
+            background: var(--val-dark);
+            transform: translateY(-50%) rotate(45deg);
+        }
+        .divider-line::before { left: -10px; }
+        .divider-line::after  { right: -10px; }
+
+        .flow-text {
+            font-size: 1rem !important;
+            color: rgba(236,232,225,0.6) !important;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            animation: fadeDown 0.6s 0.3s ease both;
+        }
+
+        .row { margin-top: 44px !important; animation: fadeDown 0.6s 0.45s ease both; }
+
+        .btn-large {
+            background: transparent !important;
+            border: 2px solid var(--val-red) !important;
+            color: var(--val-white) !important;
+            font-family: 'Rajdhani', sans-serif !important;
+            font-size: 1rem !important;
+            font-weight: 700 !important;
+            letter-spacing: 3px !important;
+            text-transform: uppercase !important;
+            padding: 0 40px !important;
+            height: 52px !important;
+            line-height: 52px !important;
+            clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%) !important;
+            border-radius: 0 !important;
+            box-shadow: 0 0 22px rgba(255,70,85,0.2) !important;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow 0.25s, color 0.25s !important;
+        }
+        .btn-large::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--val-red);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.28s ease;
+            z-index: 0;
+        }
+        .btn-large:hover::before { transform: scaleX(1); }
+        .btn-large:hover {
+            box-shadow: 0 0 38px rgba(255,70,85,0.5) !important;
+        }
+        .btn-large i, .btn-large span {
+            position: relative;
+            z-index: 1;
+        }
+        .blue.darken-2 { background-color: transparent !important; }
+
+        /* Stat strip */
+        .stats-strip {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 48px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255,70,85,0.15);
+            animation: fadeDown 0.6s 0.55s ease both;
+        }
+        .stat { text-align: center; }
+        .stat-num {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--val-red);
+            display: block;
+        }
+        .stat-lbl {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(236,232,225,0.4);
+        }
+
+        @keyframes fadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
+    </style>
 </head>
 
-<body class="container center-align" style="margin-top: 80px;">
+<body>
+    <div class="glow-orb"></div>
 
-    <h2 class="blue-text text-darken-2">Bienvenido a Social Media 🚀</h2>
-    <p class="flow-text">Conéctate, comparte y explora publicaciones</p>
+    <div class="container center-align">
 
-    <div class="row" style="margin-top: 50px;">
-        <div class="col s12 m12">
-            <a href="/posts/" class="btn-large waves-effect waves-light blue darken-2">
-                <i class="material-icons left">image</i> Ver Pots
-            </a>
+        <div class="badge">
+            <span class="badge-dot"></span>
+            <span>Social Media</span>
         </div>
+
+        <h2 class="blue-text text-darken-2">
+            Bienvenido a<br><em>Social Media</em>
+        </h2>
+
+        <div class="divider-line"></div>
+
+        <p class="flow-text">Conéctate, comparte y explora publicaciones</p>
+
+        <div class="row" style="margin-top: 50px;">
+            <div class="col s12 m12">
+                <a href="/posts/" class="btn-large waves-effect waves-light blue darken-2">
+                    <i class="material-icons left">image</i>
+                    <span>Ver Posts</span>
+                </a>
+            </div>
+        </div>
+
+     
+
     </div>
 
-    <!-- Materialize JS + icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </body>
-
 </html>

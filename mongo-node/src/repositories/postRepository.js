@@ -5,12 +5,12 @@ class PostRepository {
         return await Post.create(post);
     }
 
-    async findAll() {
-        return await Post.find().populate("user");
-    }
+   async findAll() {
+    return await Post.find().sort({ createdAt: -1 }).lean();
+}
 
     async findByUser(userId) {
-        return await Post.find({ user: userId }).populate("user");
+        return await Post.find({ user: userId });
     }
 
     async update(postId, postData) {
@@ -20,8 +20,8 @@ class PostRepository {
                 ...postData,
                 updatedAt: new Date(),
             },
-             postData, { new: true });
-        // { new: true } => devuelve el post actualizado en vez del antiguo
+            { new: true }
+        );
     }
 
     async delete(postId) {

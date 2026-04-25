@@ -2,27 +2,51 @@ import postService from "../services/postService.js";
 
 class PostController {
   async getAll(req, res) {
-    const posts = await postService.getPosts();
-    res.render("posts", { posts });
+    try {
+      const posts = await postService.getPosts();
+      res.render("posts", { posts }); 
+    } catch (error) {
+      res.status(500).send("Error al obtener los posts");
+    }
   }
 
   async create(req, res) {
-    const { userId } = req.body;
-
-    await postService.createPost(userId, req.body);
-    res.redirect("/posts");
+    try {
+      const { hashtags, ...rest } = req.body;
+      const data = {
+        ...rest,
+        hashtags: hashtags ? hashtags.split(",").map(h => h.trim()).filter(h => h !== "") : [],
+      };
+      await postService.createPost(data);
+      res.redirect("/posts");
+    } catch (error) {
+      console.error(error);
+      res.status(400).send("Error al crear: " + error.message);
+    }
   }
 
   async update(req, res) {
-    const { id } = req.params;
-    await postService.updatePost(id, req.body);
-    res.redirect("/posts");
+    try {
+      const { id } = req.params;
+      const { hashtags, ...rest } = req.body;
+      const data = {
+        ...rest,
+        hashtags: hashtags ? hashtags.split(",").map(h => h.trim()) : [],
+      };
+      await postService.updatePost(id, data);
+      res.redirect("/posts");
+    } catch (error) {
+      res.status(400).send("Error al actualizar");
+    }
   }
 
   async delete(req, res) {
-    const { id } = req.params;
-    await postService.deletePost(id);
-    res.redirect("/posts");
+    try {
+      await postService.deletePost(req.params.id);
+      res.redirect("/posts");
+    } catch (error) {
+      res.status(500).send("Error al eliminar");
+    }
   }
 }
 
