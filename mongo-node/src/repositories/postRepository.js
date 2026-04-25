@@ -14,7 +14,13 @@ class PostRepository {
     }
 
     async update(postId, postData) {
-        return await Post.findByIdAndUpdate(postId, postData, { new: true });
+        return await Post.findByIdAndUpdate(
+            postId,
+            {
+                ...postData,
+                updatedAt: new Date(),
+            },
+             postData, { new: true });
         // { new: true } => devuelve el post actualizado en vez del antiguo
     }
 
