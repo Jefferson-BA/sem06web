@@ -1,50 +1,40 @@
 import postService from "../services/postService.js";
-import Post from "../models/Post.js"; 
+import Post from "../models/Post.js";
 
 class PostController {
   async getAll(req, res) {
     try {
-      const posts = await postService.getPosts();
+      const posts = await postService.getFormattedPosts();
       res.render("posts", { posts });
-    } catch (error) {
-      res.status(500).send("Error al obtener posts");
+    } catch (e) {
+      res.status(500).render("error", { message: "Error al cargar posts" });
     }
   }
 
   async create(req, res) {
     try {
-      const { hashtags, ...rest } = req.body;
-      const data = {
-        ...rest,
-        hashtags: hashtags ? hashtags.split(",").map(h => h.trim()).filter(h => h !== "") : [],
-      };
-      await postService.createPost(data);
+      await postService.prepareAndCreate(req.body);
       res.redirect("/posts");
-    } catch (error) {
-      res.status(400).send("Error de validación: " + error.message);
+    } catch (e) {
+      res.status(400).send("Error de creación: " + e.message);
     }
   }
 
   async getEditForm(req, res) {
     try {
       const post = await Post.findById(req.params.id).lean();
+      if (!post) return res.status(404).send("No encontrado");
       res.render("editPost", { post });
-    } catch (error) {
-      res.status(404).send("Post no encontrado");
+    } catch (e) {
+      res.redirect("/posts");
     }
   }
 
   async update(req, res) {
     try {
-      const { id } = req.params;
-      const { hashtags, ...rest } = req.body;
-      const data = {
-        ...rest,
-        hashtags: hashtags ? hashtags.split(",").map(h => h.trim()) : [],
-      };
-      await postService.updatePost(id, data);
+      await postService.prepareAndUpdate(req.params.id, req.body);
       res.redirect("/posts");
-    } catch (error) {
+    } catch (e) {
       res.status(400).send("Error al actualizar");
     }
   }
@@ -53,7 +43,7 @@ class PostController {
     try {
       await postService.deletePost(req.params.id);
       res.redirect("/posts");
-    } catch (error) {
+    } catch (e) {
       res.status(500).send("Error al eliminar");
     }
   }
